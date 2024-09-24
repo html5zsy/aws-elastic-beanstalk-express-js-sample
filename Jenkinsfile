@@ -5,6 +5,10 @@ pipeline {
             args '-v /root/.npm:/root/.npm'  // Persist npm cache to speed up builds
         }
     }
+    environment {
+        // from Jenkins credential management Snyk API Token
+        SNYK_TOKEN = credentials('d3ce9f67-6d1d-4bb9-8f7f-aebe2c82510f')
+    }
     stages {
         stage('Install Dependencies') {
             steps {
@@ -37,5 +41,19 @@ pipeline {
             }
         }
         // You can add more stages for testing, deployment, etc.
+        stage('Test') {
+            steps {
+                script {
+                    // Run tests (if any)
+                    sh 'npm test'
+                }
+            }
+        }
+    }
+    post {
+        failure {
+            // Notify on failure
+            echo 'Pipeline failed due to high-severity vulnerabilities or other issues.'
+        }
     }
 }
