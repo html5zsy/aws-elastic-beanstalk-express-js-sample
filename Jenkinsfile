@@ -1,11 +1,10 @@
 pipeline {
-    // agent {
-    //     docker {
-    //         image 'node:16'  // Using Node 16 Docker image as the build agent
-    //         args '-v /root/.npm:/root/.npm'  // Persist npm cache to speed up builds
-    //     }
-    // }
-    agent any
+    agent {
+        docker {
+            image 'node:16'  // Using Node 16 Docker image as the build agent
+            args '-v /root/.npm:/root/.npm'  // Persist npm cache to speed up builds
+        }
+    }
     environment {
         // from Jenkins credential management Snyk API Token
         SNYK_TOKEN = credentials('d3ce9f67-6d1d-4bb9-8f7f-aebe2c82510f')
